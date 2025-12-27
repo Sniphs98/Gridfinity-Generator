@@ -1,3 +1,22 @@
+<script lang="ts">
+	let selectedImage = $state<string | null>(null);
+	let fileName = $state<string>('');
+
+	function handleImageSelect(event: Event) {
+		const input = event.target as HTMLInputElement;
+		const file = input.files?.[0];
+
+		if (file) {
+			fileName = file.name;
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				selectedImage = e.target?.result as string;
+			};
+			reader.readAsDataURL(file);
+		}
+	}
+</script>
+
 <h1>Gridfinity Generator</h1>
 
 <div class="space-y-4">
@@ -7,6 +26,7 @@
 		accept="image/*"
 		capture="environment"
 		class="hidden"
+		onchange={handleImageSelect}
 	/>
 	<label
 		for="camera"
@@ -33,4 +53,15 @@
 		</svg>
 		Foto mit Rückkamera aufnehmen
 	</label>
+
+	{#if selectedImage}
+		<div class="space-y-2">
+			<p class="text-sm text-gray-600 dark:text-gray-400">Ausgewähltes Bild: {fileName}</p>
+			<img
+				src={selectedImage}
+				alt="Ausgewähltes Foto"
+				class="max-w-full rounded-lg border border-gray-300 dark:border-gray-700"
+			/>
+		</div>
+	{/if}
 </div>
