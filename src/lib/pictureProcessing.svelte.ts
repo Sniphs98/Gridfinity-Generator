@@ -12,6 +12,8 @@ const ASPECT_RATIO_TOLERANCE = 0.15;
 const CONTOUR_APPROX_EPSILON = 0.02;
 const OBJECT_MIN_AREA = 1000; // Minimum area for object detection
 const PIXELS_PER_MM_A4_WIDTH = 8; // Approximation: will be calculated based on detected A4 width
+const GRIDFINITY_UNIT = 42; // Gridfinity base unit is 42mm x 42mm
+const GRIDFINITY_CLEARANCE = 1; // Add 1mm clearance on each side
 
 // Helper: Load image and convert to OpenCV Mat
 async function loadImageToMat(imageDataUrl: string): Promise<{ mat: any; canvas: HTMLCanvasElement }> {
@@ -237,6 +239,28 @@ function orderPoints(points: any): number[][] {
 	return [top[0], top[1], bottom[1], bottom[0]]; // TL, TR, BR, BL
 }
 
+// Helper: Calculate Gridfinity dimensions based on object size in mm
+function calculateGridfinityDimensions(widthMm: number, heightMm: number): {
+	gridfinityWidth: number;
+	gridfinityHeight: number;
+	gridfinityUnits: string;
+} {
+	// Add clearance (1mm on each side = 2mm total per dimension)
+	const totalClearance = GRIDFINITY_CLEARANCE * 2;
+	const widthWithClearance = widthMm + totalClearance;
+	const heightWithClearance = heightMm + totalClearance;
+
+	// Calculate how many Gridfinity units are needed (round up)
+	const gridfinityWidth = Math.ceil(widthWithClearance / GRIDFINITY_UNIT);
+	const gridfinityHeight = Math.ceil(heightWithClearance / GRIDFINITY_UNIT);
+
+	return {
+		gridfinityWidth,
+		gridfinityHeight,
+		gridfinityUnits: `${gridfinityWidth}x${gridfinityHeight}`
+	};
+}
+
 // Helper: Apply perspective transform to get bird's eye view
 function perspectiveTransform(src: any, contour: any): any {
 	const rect = orderPoints(contour);
@@ -303,6 +327,9 @@ export interface ObjectMeasurement {
 	heightMm: number;
 	areaMm2: number;
 	imageUrl: string;
+	gridfinityWidth: number; // Width in Gridfinity units
+	gridfinityHeight: number; // Height in Gridfinity units
+	gridfinityUnits: string; // e.g., "2x3"
 	debugImages?: {
 		warped: string;
 		equalized: string;
@@ -550,6 +577,9 @@ export async function detectObjectOnA4(
 			const heightMm = Math.round((boundingRect.height / pixelsPerMm) * 10) / 10;
 			const areaMm2 = Math.round((largestObjectArea / (pixelsPerMm * pixelsPerMm)) * 10) / 10;
 
+			// Calculate Gridfinity dimensions
+			const gridfinityDimensions = calculateGridfinityDimensions(widthMm, heightMm);
+
 			// Draw contour in green
 			const color = new cv.Scalar(0, 255, 0, 255); // Green
 			const contoursVec = new cv.MatVector();
@@ -607,6 +637,9 @@ export async function detectObjectOnA4(
 				heightMm,
 				areaMm2,
 				imageUrl: resultImageUrl,
+				gridfinityWidth: gridfinityDimensions.gridfinityWidth,
+				gridfinityHeight: gridfinityDimensions.gridfinityHeight,
+				gridfinityUnits: gridfinityDimensions.gridfinityUnits,
 				debugImages: {
 					warped: debugWarped,
 					equalized: debugEqualized,
@@ -629,6 +662,9 @@ export async function detectObjectOnA4(
 				heightMm: 0,
 				areaMm2: 0,
 				imageUrl: debugImageUrl,
+				gridfinityWidth: 0,
+				gridfinityHeight: 0,
+				gridfinityUnits: '0x0',
 				debugImages: {
 					warped: debugWarped,
 					equalized: debugEqualized,
