@@ -4,13 +4,91 @@
 
 :root {
 	color-scheme: light;
+
+	/* Primary Colors (Blue) - OKLCH */
+	--color-primary: oklch(0.55 0.22 260); /* Vivid blue */
+	--color-primary-hover: oklch(0.48 0.22 260); /* Darker blue */
+	--color-primary-active: oklch(0.42 0.22 260); /* Even darker blue */
+
+	/* Success Colors (Green) - OKLCH */
+	--color-success: oklch(0.62 0.19 145); /* Vivid green */
+	--color-success-hover: oklch(0.54 0.19 145); /* Darker green */
+	--color-success-active: oklch(0.46 0.19 145); /* Even darker green */
+
+	/* Background & Text - OKLCH */
+	--color-bg: oklch(1 0 0); /* Pure white */
+	--color-text: oklch(0.2 0 0); /* Near black */
+	--color-text-muted: oklch(0.5 0 0); /* Medium gray */
+
+	/* Borders - OKLCH */
+	--color-border: oklch(0.85 0 0); /* Light gray */
+	--color-border-hover: oklch(0.7 0 0); /* Medium-light gray */
 }
 
 :root.dark {
 	color-scheme: dark;
+
+	/* Primary Colors (lighter in dark mode) - OKLCH */
+	--color-primary: oklch(0.65 0.22 260); /* Lighter blue */
+	--color-primary-hover: oklch(0.58 0.22 260); /* Medium blue */
+	--color-primary-active: oklch(0.52 0.22 260); /* Darker blue */
+
+	/* Success Colors (lighter in dark mode) - OKLCH */
+	--color-success: oklch(0.72 0.19 145); /* Lighter green */
+	--color-success-hover: oklch(0.64 0.19 145); /* Medium green */
+	--color-success-active: oklch(0.56 0.19 145); /* Darker green */
+
+	/* Background & Text - OKLCH */
+	--color-bg: oklch(0.2 0 0); /* Dark gray */
+	--color-text: oklch(0.95 0 0); /* Nearly white */
+	--color-text-muted: oklch(0.6 0 0); /* Light gray */
+
+	/* Borders - OKLCH */
+	--color-border: oklch(0.3 0 0); /* Dark gray */
+	--color-border-hover: oklch(0.4 0 0); /* Medium-dark gray */
 }
 
 body {
-	@apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+	background-color: var(--color-bg);
+	color: var(--color-text);
 	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Utility Classes */
+.btn-primary {
+	background-color: var(--color-primary);
+	transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+	background-color: var(--color-primary-hover);
+}
+
+.btn-primary:active {
+	background-color: var(--color-primary-active);
+}
+
+.btn-success {
+	background-color: var(--color-success);
+	transition: background-color 0.2s ease;
+}
+
+.btn-success:hover {
+	background-color: var(--color-success-hover);
+}
+
+.btn-success:active {
+	background-color: var(--color-success-active);
+}
+
+.text-muted {
+	color: var(--color-text-muted);
+}
+
+.border-default {
+	border-color: var(--color-border);
+}
+
+.border-default:hover {
+	border-color: var(--color-border-hover);
 }

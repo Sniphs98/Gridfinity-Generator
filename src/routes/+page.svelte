@@ -30,7 +30,7 @@
 	/>
 	<label
 		for="camera"
-		class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600"
+		class="btn-primary inline-flex cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-white"
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -56,12 +56,14 @@
 
 	{#if selectedImage}
 		<div class="space-y-2">
-			<p class="text-sm text-gray-600 dark:text-gray-400">Ausgewähltes Bild: {fileName}</p>
+			<p class="text-muted text-sm">Ausgewähltes Bild: {fileName}</p>
 			<img
 				src={selectedImage}
 				alt="Ausgewähltes Foto"
-				class="max-w-full rounded-lg border border-gray-300 dark:border-gray-700"
+				class="border-default max-w-full rounded-lg border"
 			/>
 		</div>
+		<button class="btn-success mt-4 rounded-lg px-4 py-2 text-white">Generieren</button>
 	{/if}
+
 </div>
