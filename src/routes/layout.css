@@ -1,3 +1,16 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+:root {
+	color-scheme: light;
+}
+
+:root.dark {
+	color-scheme: dark;
+}
+
+body {
+	@apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
