@@ -20,8 +20,8 @@
 		}
 	}
 
-	function generator() {
-		bwImage = detectEdges(selectedImage);
+	async function generator() {
+		bwImage = await detectEdges(selectedImage);
 	}
 </script>
 
