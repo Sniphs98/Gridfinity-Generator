@@ -60,4 +60,9 @@
 		<PictureFrame image={bwImage} />
 		<PictureFrame image={a4DetectionImage} />
 	</div>
+	{#if bwImage && a4DetectionImage}
+		<button onclick={processPicture} class="btn-success rounded-lg px-4 py-2 text-white">
+			Größe
+		</button>
+	{/if}
 </div>
