@@ -3,6 +3,7 @@
 	import { detectEdges } from '$lib/pictureProcessing.svelte';
 
 	let selectedImage = $state<string | null>(null);
+    let bwImage = $state<string | null>(null);
 	let fileName = $state<string>('');
 
 	function handleImageSelect(event: Event) {
@@ -19,9 +20,9 @@
 		}
 	}
 
-    function generator(){
-        detectEdges(selectedImage);
-    }
+	function generator() {
+		bwImage = detectEdges(selectedImage);
+	}
 </script>
 
 <h1>Gridfinity Generator</h1>
@@ -42,11 +43,15 @@
 		Foto mit Rückkamera aufnehmen
 	</label>
 
-	{#if selectedImage}
-		<PictureFrame image={selectedImage} />
-		<button onclick={generator} class="btn-success mt-4 rounded-lg px-4 py-2 text-white">
-			Generieren
-		</button>
-	{/if}
+
+    <PictureFrame image={selectedImage} />
+    <button onclick={generator} class="btn-success mt-4 rounded-lg px-4 py-2 text-white">
+        Generieren
+    </button>
+
+    <!-- <p class="text-muted text-sm">Neues Bild</p> -->
+    <PictureFrame image={bwImage} />
+
+
 
 </div>
